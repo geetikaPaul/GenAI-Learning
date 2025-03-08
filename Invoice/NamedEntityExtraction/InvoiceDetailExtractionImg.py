@@ -79,7 +79,7 @@ class ImageLoaderBase64:
         ]
 
 image_prompt = ImageLoaderBase64(user_prompt="Extract bill details", image_file_path=os.path.expanduser
-                                 ("~/genAI/Invoice_NamedEntityExtraction/data/invoice.png"))
+                                 ("~/genAI/Invoice/data/invoice.png"))
 
 # Gemini trial
 # image_path = "invoiceSample1.png"

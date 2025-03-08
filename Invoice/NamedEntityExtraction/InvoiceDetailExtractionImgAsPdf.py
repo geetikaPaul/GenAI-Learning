@@ -20,7 +20,7 @@ agent = Agent(
 )
 
 # Does not work - image to pdf loses the meta tags of pdf hence, cannot be translated efficiently
-img_file_path=os.path.expanduser("~/genAI/Invoice_NamedEntityExtraction/data/InvoiceSampleImg.pdf")
+img_file_path=os.path.expanduser("~/genAI/Invoice/data/InvoiceSampleImg.pdf")
 
 
 def get_text_from_pdf(path):

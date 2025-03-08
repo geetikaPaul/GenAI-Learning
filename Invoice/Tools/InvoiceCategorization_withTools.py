@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 
 logfire.configure(token=os.getenv("Logfire_Write_Token"))
 
-file_path = "~/genAI/Invoice_NamedEntityExtraction/data/IkeaBill.jpeg" #input("Please enter the file path: ")
+file_path = "~/genAI/Invoice/data/IkeaBill.jpeg" #input("Please enter the file path: ")
 
 class Expenses(BaseModel):
     StoreName: Optional[str] = Field(description= "Pick the name on the top of the bill")

@@ -18,7 +18,7 @@ from dataclasses import dataclass
 
 logfire.configure(token=os.getenv("Logfire_Write_Token"))
 
-file_path = os.path.expanduser("~/genAI/Invoice_NamedEntityExtraction/data/IkeaBill.jpeg") #input("Please enter the file path: ")
+file_path = os.path.expanduser("~/genAI/Invoice/data/IkeaBill.jpeg") #input("Please enter the file path: ")
 
 class Expenses(BaseModel):
     Id: int = Field(description="create random integer")

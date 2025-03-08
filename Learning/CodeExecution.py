@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = genai.Client(api_key="AIzaSyB52oe7AmtddKWeY7pxMYYDLF_4h9wkp8M")
+client = genai.Client(api_key=os.getenv("Gemini_API_Key"))
 
 response = client.models.generate_content(
   model='gemini-2.0-flash-exp',

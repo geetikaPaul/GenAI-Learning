@@ -1,6 +1,6 @@
 import base64
 
-#useful for Pixtral, OpenAI
+#useful for Pixtral, OpenAI - obsolete
 class ImageLoaderBase64:
 
     def __init__(self, user_prompt: str, image_file_path: str):

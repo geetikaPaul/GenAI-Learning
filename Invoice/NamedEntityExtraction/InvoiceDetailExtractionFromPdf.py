@@ -33,7 +33,7 @@ class Info(BaseModel):
     Tax: float
     Total_cost: float
 
-file_path =os.path.expanduser("~/genAI/Invoice_NamedEntityExtraction/data/Betterinvoice.pdf")
+file_path =os.path.expanduser("~/genAI/Invoice/data/Betterinvoice.pdf")
 agent = get_agent(file_path, "convert and replace fields with value NA or empty as 'hahaaa.", Info)
 
 # logfire.instrument_openai()

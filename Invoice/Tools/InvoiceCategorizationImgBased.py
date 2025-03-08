@@ -26,7 +26,7 @@ agent = Agent(
 )
 
 image_prompt = ImageLoaderBase64(user_prompt="Extract total bill amount and category of bill", image_file_path=os.path.expanduser
-                                 ("~/genAI/Invoice_NamedEntityExtraction/data/edekaBill.jpeg"))
+                                 ("~/genAI/Invoice/data/edekaBill.jpeg"))
 
 result = agent.run_sync(image_prompt.encoded_message_with_image) 
 invoice = result.data

@@ -25,9 +25,9 @@ embedding_models = HuggingFaceEmbeddings(
 )
 
 vector_db = FAISS.from_documents(documents=documents, embedding=embedding_models,distance_strategy=DistanceStrategy.EUCLIDEAN_DISTANCE)
-print(vector_db.index)
-print(vector_db.docstore)
-print(vector_db.index_to_docstore_id)
+print(vector_db.index) # used for faster search
+print(vector_db.docstiore) # actual documents = original text + metadata
+print(vector_db.index_to_docstore_id) # index - document store mappings
 
-vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissResume")
-vector_db.save_local(folder_path=vector_db_dir)
+# vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissResume")
+# vector_db.save_local(folder_path=vector_db_dir)

@@ -10,7 +10,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 load_dotenv(override=True)
 
 kb = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/resume1.pdf")
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=30, chunk_overlap=0, length_function= len)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0, length_function= len)
 
 documents = []
 loader = PyPDFLoader(Path(kb))
@@ -25,9 +25,9 @@ embedding_models = HuggingFaceEmbeddings(
 )
 
 vector_db = FAISS.from_documents(documents=documents, embedding=embedding_models,distance_strategy=DistanceStrategy.EUCLIDEAN_DISTANCE)
-print(vector_db.index) # used for faster search
-print(vector_db.docstiore) # actual documents = original text + metadata
-print(vector_db.index_to_docstore_id) # index - document store mappings
+# print(vector_db.index) # used for faster search
+#print(vector_db.docstore) # actual documents = original text + metadata
+# print(vector_db.index_to_docstore_id) # index - document store mappings
 
-# vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissResume")
-# vector_db.save_local(folder_path=vector_db_dir)
+vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissResume")
+vector_db.save_local(folder_path=vector_db_dir)

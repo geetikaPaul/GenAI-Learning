@@ -15,7 +15,7 @@ embedding_models = HuggingFaceEmbeddings(
   model_kwargs = {"token": os.getenv("HuggingFace_AccessToken")}
 )
 
-vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissResume")
+vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissCSV")
 vector_db = FAISS.load_local(
     folder_path=vector_db_dir,
     embeddings=embedding_models,
@@ -23,17 +23,15 @@ vector_db = FAISS.load_local(
 )
 
 queries = [
-    "Name",
-    "ABC Company",
-    "NLP Algorithm",
-    "comm"
+    "smith79",
+    "Johnson",
 ]
 
 for query in queries:
-    hits = vector_db.similarity_search_with_score(query, k=2)
+    hits = vector_db.similarity_search_with_score(query, k=1)
 
     print("\nQuery:", query)
-    print("Top 2 most similar chunks in corpus/knowledge base:")
+    print("Top most similar chunks in corpus/knowledge base:")
     # print(hits)
     for hit in hits:
         print(hit[0].page_content, "(Score: {:.4f})".format(hit[1]))

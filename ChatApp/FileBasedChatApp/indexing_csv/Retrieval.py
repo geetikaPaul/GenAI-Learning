@@ -2,10 +2,6 @@ import os
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_community.vectorstores.faiss import DistanceStrategy
-from langchain_community.document_loaders import PyPDFLoader
-from pathlib import Path
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv(override=True)
 
@@ -28,11 +24,12 @@ queries = [
 ]
 
 for query in queries:
-    hits = vector_db.similarity_search_with_score(query, k=1)
+    retriver = vector_db.as_retriever(search_kwargs={"k" : 1}) #generic across different vector_db
+    hits = retriver.invoke(query)
 
     print("\nQuery:", query)
     print("Top most similar chunks in corpus/knowledge base:")
     # print(hits)
     for hit in hits:
-        print(hit[0].page_content, "(Score: {:.4f})".format(hit[1]))
+        print(hit.page_content)
         print()

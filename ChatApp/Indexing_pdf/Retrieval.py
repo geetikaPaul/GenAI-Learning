@@ -2,10 +2,6 @@ import os
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_community.vectorstores.faiss import DistanceStrategy
-from langchain_community.document_loaders import PyPDFLoader
-from pathlib import Path
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv(override=True)
 

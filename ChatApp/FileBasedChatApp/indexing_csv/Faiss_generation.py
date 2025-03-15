@@ -37,5 +37,5 @@ vector_db = FAISS.from_documents(documents=documents, embedding=embedding_models
 #print(vector_db.docstore) # actual documents = original text + metadata
 # print(vector_db.index_to_docstore_id) # index - document store mappings
 
-vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissCSV")
+vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/index/faissCSV")
 vector_db.save_local(folder_path=vector_db_dir)

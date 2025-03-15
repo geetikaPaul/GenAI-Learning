@@ -15,7 +15,7 @@ embedding_models = HuggingFaceEmbeddings(
   model_kwargs = {"token": os.getenv("HuggingFace_AccessToken")}
 )
 
-vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/faissCSV")
+vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/index/faissCSV")
 vector_db = FAISS.load_local(
     folder_path=vector_db_dir,
     embeddings=embedding_models,

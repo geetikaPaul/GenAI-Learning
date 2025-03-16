@@ -2,6 +2,9 @@ import os
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain.retrievers.document_compressors import CrossEncoderReranker
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+from langchain.retrievers import ContextualCompressionRetriever
 
 load_dotenv(override=True)
 
@@ -10,6 +13,7 @@ embedding_models = HuggingFaceEmbeddings(
   encode_kwargs = {"normalize_embeddings": True},
   model_kwargs = {"token": os.getenv("HuggingFace_AccessToken")}
 )
+rerank_model = HuggingFaceCrossEncoder(model_name=os.getenv("HF_ReRanker_MODEL"))
 
 vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/index/faissResume")
 vector_db = FAISS.load_local(
@@ -24,9 +28,12 @@ queries = [
 ]
 
 for query in queries:
-    #hits = vector_db.similarity_search_with_score(query, k=1)
     retriever = vector_db.as_retriever(search_kwargs = {"k":5})
-    hits = retriever.invoke(query)
+    compressor = CrossEncoderReranker(model=rerank_model, top_n=1)
+    compression_retriever = ContextualCompressionRetriever(
+          base_compressor=compressor, base_retriever=retriever
+    )
+    hits = compression_retriever.invoke(query)
 
     print("\nQuery:", query)
     print("Top most similar chunks in corpus/knowledge base:")

@@ -9,7 +9,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv(override=True)
 
-kb_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data")
+kb_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/resume")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0, length_function= len)
 
 documents = []

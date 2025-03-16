@@ -9,6 +9,9 @@ from pydantic_ai.models.gemini import GeminiModel
 from langchain_community.vectorstores import FAISS
 from pydantic_ai import RunContext
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.retrievers.document_compressors import CrossEncoderReranker
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+from langchain.retrievers import ContextualCompressionRetriever
 
 load_dotenv(override=True)
 
@@ -37,6 +40,8 @@ embedding_models = HuggingFaceEmbeddings(
   model_kwargs = {"token": os.getenv("HuggingFace_AccessToken")}
 )
 
+rerank_model = HuggingFaceCrossEncoder(model_name=os.getenv("HF_ReRanker_MODEL"))
+
 vector_db_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/index/faissResume")
 vector_db = FAISS.load_local(
     folder_path=vector_db_dir,
@@ -46,8 +51,13 @@ vector_db = FAISS.load_local(
 
 @agent.system_prompt
 def add_rag_prompt(ctx: RunContext[KnowledgeDeps]) -> str:
-  retriever = ctx.deps.vector_db.as_retriever(search_kwargs = {"k":2})
-  hits = retriever.invoke(ctx.deps.query)
+  base_retriever = ctx.deps.vector_db.as_retriever(search_kwargs = {"k":5})
+  compressor = CrossEncoderReranker(model=rerank_model, top_n=2)
+  compression_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor, base_retriever=base_retriever
+  )
+    
+  hits = compression_retriever.invoke(ctx.deps.query)
   prompt = mergeHits(hits)
   
   return f"<context> {prompt} </context>"

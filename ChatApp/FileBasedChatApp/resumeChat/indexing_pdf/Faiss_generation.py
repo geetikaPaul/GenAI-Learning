@@ -9,14 +9,16 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv(override=True)
 
-kb = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/resume1.pdf")
+kb_dir = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0, length_function= len)
 
 documents = []
-loader = PyPDFLoader(Path(kb))
-documents.extend(loader.load_and_split(text_splitter))
-print(len(documents))
-print(documents)
+for file in Path(kb_dir).glob("*.pdf"):
+    print(file.name)
+    loader = PyPDFLoader(file)
+    documents.extend(loader.load_and_split(text_splitter))
+#print(len(documents))
+#print(documents)
 
 embedding_models = HuggingFaceEmbeddings(
   model_name = os.getenv("HF_EMBEDDINGS_MODEL"),

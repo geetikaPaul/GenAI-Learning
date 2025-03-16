@@ -19,18 +19,19 @@ vector_db = FAISS.load_local(
 )
 
 queries = [
-    "Name",
-    "ABC Company",
-    "NLP Algorithm",
-    "Soft: Teamwork, Creative Problem Solving, Comm"
+    "UI/UX Engineer",
 ]
 
 for query in queries:
-    hits = vector_db.similarity_search_with_score(query, k=1)
+    #hits = vector_db.similarity_search_with_score(query, k=1)
+    retriever = vector_db.as_retriever(search_kwargs = {"k":5})
+    hits = retriever.invoke(query)
 
     print("\nQuery:", query)
     print("Top most similar chunks in corpus/knowledge base:")
     # print(hits)
     for hit in hits:
-        print(hit[0].page_content, "(Score: {:.4f})".format(hit[1]))
+        #print(hit[0].page_content, "(Score: {:.4f})".format(hit[1]))
+        print(hit.page_content)
+        print(hit.metadata.get('source'))
         print()

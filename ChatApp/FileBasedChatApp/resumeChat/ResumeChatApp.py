@@ -27,12 +27,20 @@ agent = Agent(
     model=GeminiModel(
         model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
     ),
-    system_prompt="You are a resume details fetcher chatbot.",
+    system_prompt="""
+      You are a resume details fetcher chatbot.
+      Follow these guidelines:
+        - ALWAYS search the knowledge base that is provided in the context between <context> </context> tags to answer user questions.
+        - Provide accurate candidate information based ONLY on the information retrieved from the knowledge base. 
+        - Never make assumptions or provide information not present in the knowledge base.
+        - If information is not found in the knowledge base, politely acknowledge this.
+        -Fetch candidate name based on the name provided in <context> </context>
+    """
 )
 
 def mergeHits(hits: list):
   delimiter = "\n" # Define a delimiter
-  return delimiter.join([hit.page_content for hit in hits])
+  return delimiter.join(["data: " + hit.page_content+" candidate: " + os.path.splitext(os.path.basename(hit.metadata.get('source')))[0] for hit in hits])
 
 embedding_models = HuggingFaceEmbeddings(
   model_name = os.getenv("HF_EMBEDDINGS_MODEL"),

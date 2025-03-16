@@ -18,7 +18,7 @@ for file in Path(kb_dir).glob("*.pdf"):
     loader = PyPDFLoader(file)
     documents.extend(loader.load_and_split(text_splitter))
 #print(len(documents))
-#print(documents)
+print(documents[0])
 
 embedding_models = HuggingFaceEmbeddings(
   model_name = os.getenv("HF_EMBEDDINGS_MODEL"),

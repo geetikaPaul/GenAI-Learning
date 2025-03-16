@@ -24,7 +24,8 @@ vector_db = FAISS.load_local(
 
 queries = [
     "Proseware, Inc.",
-    "John Doe"
+    "John Doe contact",
+    "Ian Hannson skills"
 ]
 
 for query in queries:

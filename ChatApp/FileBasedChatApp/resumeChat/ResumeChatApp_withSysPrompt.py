@@ -3,6 +3,7 @@ from google.genai import types
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
+import logfire
 from rich.console import Console
 from pydantic_ai import Agent
 from pydantic_ai.models.gemini import GeminiModel
@@ -14,7 +15,7 @@ from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from langchain.retrievers import ContextualCompressionRetriever
 
 load_dotenv(override=True)
-
+logfire.configure(token=os.getenv("Logfire_Write_Token"))
 class KnowledgeDeps(BaseModel):
   vector_db: FAISS
   query: str
@@ -59,6 +60,7 @@ vector_db = FAISS.load_local(
 
 @agent.system_prompt
 def add_rag_prompt(ctx: RunContext[KnowledgeDeps]) -> str:
+  print("systemm prompt being updated")
   base_retriever = ctx.deps.vector_db.as_retriever(search_kwargs = {"k":5})
   compressor = CrossEncoderReranker(model=rerank_model, top_n=2)
   compression_retriever = ContextualCompressionRetriever(
@@ -79,15 +81,22 @@ def main():
     )
 
   messages = []
+  # queries = ["nlp guys", 
+  #            "his address", 
+  #            "John Doe's projects list from Spring 2023", 
+  #            "john's tech skills list", 
+  #            "Ian Hannson"]
 
   while(True):
+  #for user_message in queries:
       user_message = input()
       if(user_message == 'q'):
         break
-      knowledgeDeps = KnowledgeDeps(vector_db= vector_db, query=user_message)
-      response = agent.run_sync(user_message, message_history=messages, deps= knowledgeDeps)
-      console.print(response.data, style="cyan", end="\n\n")
-      messages+=response.new_messages()
+      with logfire.span("Calling model") as span:
+        knowledgeDeps = KnowledgeDeps(vector_db= vector_db, query=user_message)
+        response = agent.run_sync(user_message, message_history=messages, deps= knowledgeDeps)
+        console.print(response.data, style="cyan", end="\n\n")
+        messages+=response.new_messages()
     
 if __name__ == '__main__':
   main()

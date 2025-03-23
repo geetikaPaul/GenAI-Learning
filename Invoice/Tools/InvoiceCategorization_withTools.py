@@ -20,7 +20,6 @@ class Expenses(BaseModel):
     Category: str = Field(description="if items are grocery items then grocery, electronics as electronic and so on")
     Amount: float
 
-agent = get_agent(system_prompt="Extract bill data. First, attempt to find category based on your knowledge. If you don't know the answer, retrieve category through an external tool.", result_type=Expenses, model_name="gemini")
 #agent = get_agent(file_path = file_path, system_prompt="Extract bill data. First, attempt to find category based on your knowledge. If you don't know the answer, retrieve category through an external tool.", result_type=Expenses, model_name="gemini")
 
 image_prompt = get_prompt(user_prompt="Extract total bill amount and category of bill", file_path=os.path.expanduser
@@ -70,7 +69,9 @@ def save_expense(expense: Expenses):
         db.refresh(db_expense)
         db.close()
         return db_expense
-    
+
+agent = get_agent(system_prompt="Extract bill data. First, attempt to find category based on your knowledge. If you don't know the answer, retrieve category through an external tool.", result_type=Expenses, model_name="gemini")
+  
 @agent.tool_plain
 def get_category(store_name: str) -> str:
     """Returns the category of the store"""

@@ -15,14 +15,7 @@ from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from langchain.retrievers import ContextualCompressionRetriever
 
 load_dotenv(override=True)
-#logfire.configure(token=os.getenv("Logfire_Write_Token"))
-
-class KnowledgeDeps(BaseModel):
-  vector_db: FAISS
-  query: str
-  
-  class Config:
-        arbitrary_types_allowed = True
+logfire.configure(token=os.getenv("Logfire_Write_Token"))
 
 client = genai.Client(api_key=os.getenv("Gemini_API_Key"))
 agent = Agent(
@@ -42,7 +35,8 @@ agent = Agent(
 
 def mergeHits(hits: list):
   delimiter = "\n" # Define a delimiter
-  return delimiter.join(["data: " + hit.page_content+" candidate: " + os.path.splitext(os.path.basename(hit.metadata.get('source')))[0] for hit in hits])
+  #return delimiter.join(["data: " + hit.page_content+" candidate: " + os.path.splitext(os.path.basename(hit.metadata.get('source')))[0] for hit in hits])
+  return delimiter.join(["data: " + hit.page_content for hit in hits])
 
 embedding_models = HuggingFaceEmbeddings(
   model_name = os.getenv("HF_EMBEDDINGS_MODEL"),
@@ -61,7 +55,7 @@ vector_db = FAISS.load_local(
 
 
 def get_rag_context(vector_db: FAISS, query: str) -> str:
-  print("getting rag context")
+  #print("getting rag context")
   base_retriever = vector_db.as_retriever(search_kwargs = {"k":5})
   compressor = CrossEncoderReranker(model=rerank_model, top_n=2)
   compression_retriever = ContextualCompressionRetriever(
@@ -93,12 +87,11 @@ def main():
       user_message = input()
       if(user_message == 'q'):
         break
-      #with logfire.span("Calling model") as span:
-      knowledgeDeps = KnowledgeDeps(vector_db= vector_db, query=user_message)
-      prompt = get_rag_context(vector_db=vector_db, query=user_message) + "\n\n query :" + user_message
-      response = agent.run_sync(prompt, message_history=messages, deps= knowledgeDeps)
-      console.print(response.data, style="cyan", end="\n\n")
-      messages+=response.new_messages()
+      with logfire.span("Calling model") as span:
+        prompt = get_rag_context(vector_db=vector_db, query=user_message) + "\n\n query :" + user_message
+        response = agent.run_sync(prompt, message_history=messages)
+        console.print(response.data, style="cyan", end="\n\n")
+        messages+=response.new_messages()
     
 if __name__ == '__main__':
   main()

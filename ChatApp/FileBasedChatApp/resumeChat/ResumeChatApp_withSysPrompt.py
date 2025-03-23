@@ -28,6 +28,7 @@ agent = Agent(
     model=GeminiModel(
         model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
     ),
+    deps_type=KnowledgeDeps,
     system_prompt="""
       You are a resume details fetcher chatbot.
       Follow these guidelines:

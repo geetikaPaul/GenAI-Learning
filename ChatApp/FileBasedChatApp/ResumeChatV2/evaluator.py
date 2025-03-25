@@ -3,8 +3,7 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 from eval_utils import evaluate_retrieval_batch
-from retriever import DataRetriever
-from ingestor import DataIngestor
+from semantic_searcher_with_rerank import SemanticSearcherWithRerank
 
 
 def evaluate(
@@ -12,8 +11,7 @@ def evaluate(
     eval_file: str,
     results_detailed_file: str,
     results_summary_file: str,
-    retriever: DataRetriever,
-    rerank: bool = False,
+    semantic_searcher: SemanticSearcherWithRerank,
 ):
     results_path = os.path.join(src_dir, "results")
     if not os.path.exists(results_path):
@@ -33,16 +31,20 @@ def evaluate(
         f1s,
         mrrs,
         verdicts,
-    ) = evaluate_retrieval_batch(eval_data, rerank, retriever)
+        all_correct_links,
+        all_retrieved_links,
+    ) = evaluate_retrieval_batch(eval_data, semantic_searcher)
 
     df = pd.DataFrame(
         {
             "question": [item["question"] for item in eval_data],
-            "verdict": verdicts,
+            "correct_links": all_correct_links,
+            "retrieved_links": all_retrieved_links,
             "retrieval_precision": precisions,
             "retrieval_recall": recalls,
             "retrieval_mrr": mrrs,
             "retrieval_f1": f1s,
+            "verdict": verdicts,
         }
     )
     df.to_csv(
@@ -65,26 +67,28 @@ def evaluate(
 
 load_dotenv(override=True)
 src_dir = os.path.expanduser(
-    "~/Documents/genai-training-pydanticai/data/semantic-search/project/version2"
-)
-vector_db_dir = "index"
-kb_dir = "kb"
-di = DataIngestor(src_dir, vector_db_dir, kb_dir)
-di.ingest()
-dr = DataRetriever(src_dir, vector_db_dir)
+        "~/genAI/ChatApp/FileBasedChatApp/data"
+    )
+vector_db_dir = "faissResumeV2"
+kb_dir = "resume"
+embedding_model_name = os.getenv("HF_EMBEDDINGS_MODEL")
+reranking_model_name = os.getenv("HF_ReRanker_MODEL")
+retriever_top_k = 5
+reranker_top_k = 2
+ss = SemanticSearcherWithRerank(
+        src_dir,
+        kb_dir,
+        vector_db_dir,
+        embedding_model_name,
+        reranking_model_name,
+        retriever_top_k,
+        reranker_top_k
+    )
 
 evaluate(
     src_dir=src_dir,
-    eval_file="../eval/docs_evaluation_dataset.json",
+    eval_file="eval/resumev2_eval_data.json",
     results_detailed_file="results.csv",
     results_summary_file="summary.json",
-    retriever=dr,
-)
-evaluate(
-    src_dir=src_dir,
-    eval_file="../eval/docs_evaluation_dataset.json",
-    results_detailed_file="results_rerank.csv",
-    results_summary_file="summary_rerank.json",
-    retriever=dr,
-    rerank=True,
+    semantic_searcher=ss,
 )

@@ -1,0 +1,6 @@
+{
+  "average_precision": 1.25,
+  "average_recall": 0.6875,
+  "average_f1": 0.8870967741935484,
+  "average_mrr": 0.625
+}

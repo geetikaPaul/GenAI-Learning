@@ -61,8 +61,9 @@ def main():
             break
         console.print()
         result = ss.retrieveContent(user_question)
-        prompt = get_rag_context(context= result) + "\n\n query :" + user_question
-        response = agent.run_sync(prompt)
+        with logfire.span("Calling model") as span:
+          prompt = get_rag_context(context= result) + "\n\n query :" + user_question
+          response = agent.run_sync(prompt)
         console.print(response.data, style="cyan", end="\n\n")
 
 

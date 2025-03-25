@@ -32,7 +32,7 @@ class SemanticSearcherWithRerank:
             model_kwargs={"token": os.getenv("HUGGING_FACE_TOKEN")},
         )
         self.rerank_model = HuggingFaceCrossEncoder(model_name=reranking_model_name)
-        self.ingest()
+        self.ingestJson()
 
     def ingest(self):
         print("Ingestion of data begins........")
@@ -70,6 +70,7 @@ class SemanticSearcherWithRerank:
                 metadata_func=self.metadata_func,
             )
             documents.extend(loader.load())
+        #print(documents[0])
 
         vector_db = FAISS.from_documents(
             documents=documents,
@@ -110,5 +111,11 @@ class SemanticSearcherWithRerank:
         results = compression_retriever.invoke(query)
         outputs = []
         for result in results:
-            outputs.append(result.page_content)
+            output_data = {
+            'page_content': result.page_content,
+            'source': result.metadata.get('source'),
+            'sectionTitle': result.metadata.get('sectionTitle')
+            }
+            
+            outputs.append(output_data)
         return outputs

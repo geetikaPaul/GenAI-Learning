@@ -1,0 +1,87 @@
+[
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "John Doe",
+        "chunk": "Software engineer obsessed with building exceptional products that people love hello@openresume.com 123-456-7890 NYC, NY linkedin.com/in/john-doe"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "ABC Company",
+        "chunk": "Software Engineer May 2023 - Present  Lead a cross-functional team of 5 engineers in developing a search bar, which enables thousands  of daily active users to search content across the entire platform  Create stunning home page product demo animations that drives up sign up rate by 20%  Write clean code that is modular and easy to maintain while ensuring 100% test coverage"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "DEF Organization",
+        "chunk": "Software Engineer Intern Summer 2022  Re-architected the existing content editor to be mobile responsive that led to a 10% increase in  mobile user engagement  Created a progress bar to help users track progress that drove up user retention by 15%  Discovered and \ufb01xed 5 bugs in the existing codebase to enhance user experience"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "XYZ University",
+        "chunk": "Research Assistant Summer 2021  Devised a new NLP algorithm in text classi\ufb01cation that results in 10% accuracy increase  Compiled and presented research \ufb01ndings to a group of 20+ faculty and students"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "XYZ University",
+        "chunk": "Bachelor of Science in Computer Science - 3.8 GPA Sep 2019 - May 2023  Won 1st place in 2022 Education Hackathon, 2nd place in 2023 Health Tech Competition  Teaching Assistant for Programming for the Web (2022 - 2023)  Coursework: Object-Oriented Programming (A+), Programming for the Web (A+), Cloud Computing  (A), Introduction to Machine Learning (A-), Algorithms Analysis (A-)"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "OpenResume",
+        "chunk": "Spring 2023  Created and launched a free resume builder web app that allows thousands of users to create  professional resume easily and land their dream jobs"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/JohnDoe.pdf",
+        "sectionTitle": "SKILLS",
+        "chunk": "HTML TypeScript CSS React Python C++  Tech: React Hooks, GraphQL, Node.js, SQL, Postgres, NoSql, Redis, REST API, Git  Soft: Teamwork, Creative Problem Solving, Communication, Learning Mindset, Agile"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/MayRiley.pdf",
+        "sectionTitle": "Profile",
+        "chunk": "Friendly and engaging team player and leader able to inspire staff to perform their best. Detail oriented  and experienced restaurant manager passionate about food and beverages. A multi-tasker who excels at  staff training and recruiting with a track record of inspiring great customer service and customer  satisfaction. Regularly exceed sales goals. A master in the art of upselling."
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/MayRiley.pdf",
+        "sectionTitle": "RESTAURANT MANAGER | CONTOSO BAR AND GRILL | SEPTEMBER 20XX \u2013 PRESENT",
+        "chunk": "\u00b7   Recruit, hire, train, and coach over 30 staff members on customer service skills, food & beverage  knowledge, sales, and health & safety standards.  \u00b7   Reduced costs by 7% through controls on overtime, operational efficiencies, and reduced waste.   \u00b7   Consistently exceed monthly sales goals by a minimum of 10% by training FOH staff on upselling  techniques and by creating a featured food and beverage program."
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/MayRiley.pdf",
+        "sectionTitle": "RESTAURANT MANAGER | FOURTH COFFEE BISTRO | JUNE 20XX \u2013 AUGUST 20XX",
+        "chunk": "\u00b7   Created a cross-training program ensuring FOH staff members were able to perform confidently and  effectively in all positions.   \u00b7   Grew customer based and increased restaurant social media accounts by 19% through interactive  promotions, engaging postings, and contests.   \u00b7   Created and implemented staff health and safety standards compliance training program, achieving a  score of 99% from the Board of Health.   \u00b7   Successfully redesigned existing inventory system, ordering and food storage practices, resulting in a  6% decrease in food waste and higher net profits."
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/MayRiley.pdf",
+        "sectionTitle": "Skills & Abilities",
+        "chunk": "\u00b7   Accounting & Budgeting  \u00b7   Proficient with POS systems  \u00b7   Excellent interpersonal and communication skills  \u00b7   Poised under pressure  \u00b7   Experienced in most restaurant positions  \u00b7   Fun and energetic"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/MayRiley.pdf",
+        "sectionTitle": "Activities and Interests",
+        "chunk": "Theater, environmental conservation, art, hiking, skiing, travel"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/IanHannson.pdf",
+        "sectionTitle": "UI/UX Engineer",
+        "chunk": "Developer  PROFILE  CONTACT   Enthusiastic and creative graphic designer with a passion  for translating ideas into visually compelling designs. With  experience in both print and digital mediums, I thrive on  bringing concepts to life through innovative and impactful  designs.    816-555-0146    ian_hansson    hansson@example.com    www.example.com  EXPERIENCE  SKILLS"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/IanHannson.pdf",
+        "sectionTitle": "Adatum Corporation",
+        "chunk": "20XX-PRESENT  Developed and evolved brand identities, crafted  compelling collateral, oversaw end-to-end project  lifecycles, consistently met tight deadlines, contributed to  award-winning projects, and mentored junior designers.  \u2022   Design software  \u2022   Typography  \u2022   UI/UX design  \u2022   Print design  \u2022   Project management  \u2022   Creative problem solving  \u2022   Communication skills"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/IanHannson.pdf",
+        "sectionTitle": "Proseware, Inc.",
+        "chunk": "20XX-20XX  Actively participated in the development and evolution of  brand identities, was involved in various stages of project  lifecycles, and contributed to projects that received  awards.  EDUCATION"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/IanHannson.pdf",
+        "sectionTitle": "Graphic Design Institute",
+        "chunk": "20XX-20XX  Master of Fine Arts, Graphic Design"
+    },
+    {
+        "source": "/Users/akshay/genAI/ChatApp/FileBasedChatApp/data/resume/IanHannson.pdf",
+        "sectionTitle": "Jasper University",
+        "chunk": "20XX-20XX  Bachelor of Arts, Graphic Design"
+    }
+]

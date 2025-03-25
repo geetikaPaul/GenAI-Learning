@@ -1,0 +1,5 @@
+question,correct_links,retrieved_links,retrieval_precision,retrieval_recall,retrieval_mrr,retrieval_f1,verdict
+contact details of John Doe,"['John Doe', 'hello@openresume.com', '123-456-7890', 'NYC, NY', 'chunkedin.com/in/john-doe']","['John Doe', 'UI/UX Engineer']",0.5,0.2,1.0,0.28571428571428575,False
+Is there any graphic designer?,['Ian Hannson'],"['UI/UX Engineer', 'Jasper University']",0.0,0.0,0.0,0.0,False
+Education university of John Doe,"['XYZ University', 'Bachelor of Science', 'Computer Science', '3.8 GPA']","['John Doe', 'XYZ University']",0.5,0.25,0.5,0.3333333333333333,True
+"anyone with React Hooks, GraphQL, Node.js skills","['skills', 'education']","['SKILLS', 'Adatum Corporation']",0.5,0.5,0.0,0.5,True

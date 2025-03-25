@@ -87,7 +87,7 @@ ss = SemanticSearcherWithRerank(
 
 evaluate(
     src_dir=src_dir,
-    eval_file="eval/resumev2_eval_data.json",
+    eval_file="eval/resumev2_eval_data_metadata.json",
     results_detailed_file="results.csv",
     results_summary_file="summary.json",
     semantic_searcher=ss,

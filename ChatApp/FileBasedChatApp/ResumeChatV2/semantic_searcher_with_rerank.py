@@ -7,7 +7,7 @@ from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CrossEncoderReranker
 from langchain_community.vectorstores.faiss import DistanceStrategy
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader, JSONLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
@@ -52,6 +52,34 @@ class SemanticSearcherWithRerank:
         vector_db.save_local(folder_path=self.vector_db_dir)
         self.vector_db = vector_db
         print("Ingestion of data ends........")
+        
+    def metadata_func(self, record: dict, metadata: dict) -> dict:
+        metadata["source"] = record.get("source")
+        metadata["sectionTitle"] = record.get("sectionTitle")
+        return metadata
+
+    def ingestJson(self):
+        print("Ingestion of data begins........")
+        documents = []
+        for file in Path(self.kb_dir).glob("*.json"):
+            loader = JSONLoader(
+                file_path=file,
+                jq_schema=".[]",
+                content_key=".chunk",
+                is_content_key_jq_parsable=True,
+                metadata_func=self.metadata_func,
+            )
+            documents.extend(loader.load())
+
+        vector_db = FAISS.from_documents(
+            documents=documents,
+            embedding=self.embeddings_model,
+            distance_strategy=DistanceStrategy.EUCLIDEAN_DISTANCE,
+        )
+
+        vector_db.save_local(folder_path=self.vector_db_dir)
+        self.vector_db = vector_db
+        print("Ingestion of data ends........")
 
     def retrieve(self, query: str):
         base_retriever = self.vector_db.as_retriever(
@@ -66,7 +94,7 @@ class SemanticSearcherWithRerank:
         results = compression_retriever.invoke(query)
         outputs = []
         for result in results:
-            outputs.append(result.metadata["source"])
+            outputs.append(result.metadata["sectionTitle"])
         return outputs
 
     def retrieveContent(self, query: str):

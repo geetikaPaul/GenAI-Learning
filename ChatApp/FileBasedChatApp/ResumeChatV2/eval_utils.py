@@ -6,9 +6,17 @@ def calculate_mrr(retrieved_chunks: list[str], correct_chunks: list[str]) -> flo
             return 1 / i
     return 0
 
+def normalize_text(text: str) -> str:
+    # Normalize by removing spaces, newlines, and tabs
+    return ''.join(text.lower().split())
 
 def evaluate_retrieval(retrieved_chunks: list[str], correct_chunks: list[str]):
-    true_positives = len([1 for retrieved in retrieved_chunks for correct in correct_chunks if correct in retrieved])
+    # Normalize both retrieved_chunks and correct_chunks
+    normalized_retrieved_chunks = [normalize_text(chunk) for chunk in retrieved_chunks]
+    normalized_correct_chunks = [normalize_text(chunk) for chunk in correct_chunks]
+
+    # Calculate true positives considering overlapping substrings and ignoring extra spaces/newlines/tabs
+    true_positives = len([1 for retrieved in normalized_retrieved_chunks for correct in normalized_correct_chunks if correct in retrieved])
     precision = true_positives / len(retrieved_chunks) if retrieved_chunks else 0
     recall = true_positives / len(correct_chunks) if correct_chunks else 0
     f1 = (

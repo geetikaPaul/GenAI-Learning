@@ -37,7 +37,7 @@ def main():
           end="\n\n",
       )
   
-    file_path = os.path.expanduser("~/genAI/ChatApp/sevenWonders.png") 
+    file_path = os.path.expanduser("~/genAI/ChatApp/FileBasedChatApp/data/sevenWonders.png") 
     response = ImgDescAgent.run_sync(get_prompt(user_prompt="What's in the image?", file_path=file_path))
     
     while(True):

@@ -1,0 +1,8 @@
+question,correct_links,retrieved_links,retrieval_precision,retrieval_recall,retrieval_mrr,retrieval_f1,verdict
+contact details of John Doe,"['Profile John Doe', 'Experience ABC Company']","['Profile John Doe', 'Profile UI/UX Engineer']",0.5,0.5,1.0,0.5,True
+Is there any graphic designer?,"['Profile UI/UX Engineer', 'Education Graphic Design Institute']","['Profile UI/UX Engineer', 'Education Jasper University']",0.5,0.5,1.0,0.5,True
+Education university of John Doe,"['Education XYZ University', 'Experience XYZ University']","['Profile John Doe', 'Education XYZ University']",0.5,0.5,0.5,0.5,True
+"anyone with React Hooks, GraphQL, Node.js skills","['SKILLS', 'Profile John Doe']","['SKILLS', 'Experience Adatum Corporation']",0.5,0.5,1.0,0.5,True
+in which year did John Doe graduate,"['Education XYZ University', 'Profile John Doe']","['Profile John Doe', 'Education XYZ University']",1.0,1.0,1.0,1.0,True
+Bachelor domain of Ian Hannson,"['Education Jasper University', 'Profile UI/UX Engineer']","['Education Jasper University', 'Profile UI/UX Engineer']",1.0,1.0,1.0,1.0,True
+Expertise of Mary,"['Skills & Abilities', 'Profile']","['Profile', 'Skills & Abilities']",1.0,1.0,1.0,1.0,True

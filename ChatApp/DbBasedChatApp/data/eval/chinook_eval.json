@@ -1,0 +1,34 @@
+[
+
+  {
+    "question": "Is there an invoice with billing city Stuttgart",
+    "correct_chunks": [
+      "Invoice" ,"InvoiceLine"
+    ]
+  },
+  {
+    "question": "Total bills in Germany",
+    "correct_chunks": [
+      "Invoice" ,"InvoiceLine"
+    ]
+  },
+  {
+    "question": "Name the artist of Balls to the Wall album",
+    "correct_chunks": [
+      "Artist", "Album"
+    ]
+  },
+  {
+    "question": "List 5 albums of BackBeat",
+    "correct_chunks": [
+      "Artist", "Album"
+    ]
+  },
+  {
+    "question": "List at least one album from Pop Genre",
+    "correct_chunks": [
+      "Genre",
+      "Track", "Album"
+    ]
+  }
+]

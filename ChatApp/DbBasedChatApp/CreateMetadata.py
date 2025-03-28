@@ -25,7 +25,8 @@ def create_metadata_json(src_dir: str, db_file: str, json_file: str):
 
             table_info = {
                 "table": table_name,
-                "columns": [{"name": col[1], "type": col[2]} for col in columns]
+                "columns": [{"name": col[1], "type": col[2]} for col in columns],
+                "chunk": f"table: {table_name} - columns: " + ", ".join(f"{col[1]} ({col[2]})" for col in columns)
             }
 
             schema.append(table_info)

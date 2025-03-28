@@ -1,0 +1,313 @@
+[
+    {
+        "table": "Album",
+        "columns": [
+            {
+                "name": "AlbumId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Title",
+                "type": "NVARCHAR(160)"
+            },
+            {
+                "name": "ArtistId",
+                "type": "INTEGER"
+            }
+        ]
+    },
+    {
+        "table": "Artist",
+        "columns": [
+            {
+                "name": "ArtistId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Name",
+                "type": "NVARCHAR(120)"
+            }
+        ]
+    },
+    {
+        "table": "Customer",
+        "columns": [
+            {
+                "name": "CustomerId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "FirstName",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "LastName",
+                "type": "NVARCHAR(20)"
+            },
+            {
+                "name": "Company",
+                "type": "NVARCHAR(80)"
+            },
+            {
+                "name": "Address",
+                "type": "NVARCHAR(70)"
+            },
+            {
+                "name": "City",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "State",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "Country",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "PostalCode",
+                "type": "NVARCHAR(10)"
+            },
+            {
+                "name": "Phone",
+                "type": "NVARCHAR(24)"
+            },
+            {
+                "name": "Fax",
+                "type": "NVARCHAR(24)"
+            },
+            {
+                "name": "Email",
+                "type": "NVARCHAR(60)"
+            },
+            {
+                "name": "SupportRepId",
+                "type": "INTEGER"
+            }
+        ]
+    },
+    {
+        "table": "Employee",
+        "columns": [
+            {
+                "name": "EmployeeId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "LastName",
+                "type": "NVARCHAR(20)"
+            },
+            {
+                "name": "FirstName",
+                "type": "NVARCHAR(20)"
+            },
+            {
+                "name": "Title",
+                "type": "NVARCHAR(30)"
+            },
+            {
+                "name": "ReportsTo",
+                "type": "INTEGER"
+            },
+            {
+                "name": "BirthDate",
+                "type": "DATETIME"
+            },
+            {
+                "name": "HireDate",
+                "type": "DATETIME"
+            },
+            {
+                "name": "Address",
+                "type": "NVARCHAR(70)"
+            },
+            {
+                "name": "City",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "State",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "Country",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "PostalCode",
+                "type": "NVARCHAR(10)"
+            },
+            {
+                "name": "Phone",
+                "type": "NVARCHAR(24)"
+            },
+            {
+                "name": "Fax",
+                "type": "NVARCHAR(24)"
+            },
+            {
+                "name": "Email",
+                "type": "NVARCHAR(60)"
+            }
+        ]
+    },
+    {
+        "table": "Genre",
+        "columns": [
+            {
+                "name": "GenreId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Name",
+                "type": "NVARCHAR(120)"
+            }
+        ]
+    },
+    {
+        "table": "Invoice",
+        "columns": [
+            {
+                "name": "InvoiceId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "CustomerId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "InvoiceDate",
+                "type": "DATETIME"
+            },
+            {
+                "name": "BillingAddress",
+                "type": "NVARCHAR(70)"
+            },
+            {
+                "name": "BillingCity",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "BillingState",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "BillingCountry",
+                "type": "NVARCHAR(40)"
+            },
+            {
+                "name": "BillingPostalCode",
+                "type": "NVARCHAR(10)"
+            },
+            {
+                "name": "Total",
+                "type": "NUMERIC(10,2)"
+            }
+        ]
+    },
+    {
+        "table": "InvoiceLine",
+        "columns": [
+            {
+                "name": "InvoiceLineId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "InvoiceId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "TrackId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "UnitPrice",
+                "type": "NUMERIC(10,2)"
+            },
+            {
+                "name": "Quantity",
+                "type": "INTEGER"
+            }
+        ]
+    },
+    {
+        "table": "MediaType",
+        "columns": [
+            {
+                "name": "MediaTypeId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Name",
+                "type": "NVARCHAR(120)"
+            }
+        ]
+    },
+    {
+        "table": "Playlist",
+        "columns": [
+            {
+                "name": "PlaylistId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Name",
+                "type": "NVARCHAR(120)"
+            }
+        ]
+    },
+    {
+        "table": "PlaylistTrack",
+        "columns": [
+            {
+                "name": "PlaylistId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "TrackId",
+                "type": "INTEGER"
+            }
+        ]
+    },
+    {
+        "table": "Track",
+        "columns": [
+            {
+                "name": "TrackId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Name",
+                "type": "NVARCHAR(200)"
+            },
+            {
+                "name": "AlbumId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "MediaTypeId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "GenreId",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Composer",
+                "type": "NVARCHAR(220)"
+            },
+            {
+                "name": "Milliseconds",
+                "type": "INTEGER"
+            },
+            {
+                "name": "Bytes",
+                "type": "INTEGER"
+            },
+            {
+                "name": "UnitPrice",
+                "type": "NUMERIC(10,2)"
+            }
+        ]
+    }
+]

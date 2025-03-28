@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from Utils.inmemmDB import CreateTable, GetData, SaveData
 
-CreateTable('CREATE TABLE expenses (id INTEGER PRIMARY KEY, store_name TEXT, category TEXT, amount FLOAT)')
+CreateTable('CREATE TABLE Expense (Id INTEGER PRIMARY KEY, StoreName TEXT, Category TEXT, Amount FLOAT)')
 class Expense:
     Id: int
     StoreName: str
@@ -17,12 +17,13 @@ class Expense:
         self.Amount = amount
 
 def save_expense(expense: Expense):
-        insertStmmt = f"INSERT INTO expenses VALUES ({expense.Id}, '{expense.StoreName}', '{expense.Category}' , {expense.Amount})"
+        insertStmmt = f"INSERT INTO Expense VALUES ({expense.Id}, '{expense.StoreName}', '{expense.Category}' , {expense.Amount})"
         print(insertStmmt)
         SaveData(insertStatement=insertStmmt)
         
 save_expense(Expense( 1, "Dm", "Groceries",100.0))
-save_expense(Expense( 2, "Ikea", "Furnitures",1000.0))
+save_expense(Expense( 2, "Dm", "Groceries",70.0))
+save_expense(Expense( 3, "Ikea", "Furnitures",1000.0))
 
 
 def get_expenses(query: str):

@@ -1,0 +1,6 @@
+question,correct_links,retrieved_links,retrieval_precision,retrieval_recall,retrieval_mrr,retrieval_f1,verdict
+Is there an invoice with billing city Stuttgart,"['Invoice', 'InvoiceLine']","['Invoice', 'InvoiceLine', 'Customer', 'Artist', 'Playlist']",0.6,1.5,1.0,0.857142857142857,True
+Total bills in Germany,"['Invoice', 'InvoiceLine']","['Invoice', 'Employee', 'Customer', 'Track', 'InvoiceLine']",0.6,1.5,1.0,0.857142857142857,True
+Name the artist of Balls to the Wall album,"['Artist', 'Album']","['Album', 'Artist', 'Track', 'Employee', 'Customer']",0.4,1.0,1.0,0.5714285714285715,True
+List 5 albums of BackBeat,"['Artist', 'Album']","['Album', 'Track', 'Customer', 'Playlist', 'Genre']",0.2,0.5,1.0,0.28571428571428575,False
+List at least one album from Pop Genre,"['Genre', 'Track', 'Album']","['Album', 'Track', 'Genre', 'Customer', 'Artist']",0.6,1.0,1.0,0.7499999999999999,True

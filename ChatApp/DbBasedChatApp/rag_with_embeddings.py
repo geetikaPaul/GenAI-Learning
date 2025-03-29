@@ -63,7 +63,10 @@ def main():
     )
   console = Console()
   console.print(
-        "Welcome to resume Bot. How may I assist you today?",
+        """
+        Welcome to text-sql-response Bot. I have data for albums, track, genre, invoice, employee, customer
+        How may I assist you today?
+        """,
         style="cyan",
         end="\n\n",
     )
@@ -78,12 +81,12 @@ def main():
       #with logfire.span("Calling model") as span:
       prompt = f"<schema> {ss.retrieveContent(user_message)} </schema> question: {user_message}"
       response = queryGenAgent.run_sync(user_prompt=prompt) #, message_history=messagesData.get_all())
-      #console.print(response.data, style="cyan", end="\n\n")
+      console.print(response.data, style="cyan", end="\n\n")
       #messagesSql.add(response.all_messages())
         
       promptWIthQuery = f"query: {response.data} question: {user_message}"
       response = queryRunAgent.run_sync(user_prompt=promptWIthQuery, deps=systemDeps) #, message_history=messagesData.get_all())
-      console.print(response.data, style="cyan", end="\n\n")
+      console.print(f"output: {response.data}", style="cyan", end="\n\n")
       #messagesData.add(response.all_messages())
     
 if __name__ == '__main__':

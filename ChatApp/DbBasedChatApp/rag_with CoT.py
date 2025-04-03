@@ -19,40 +19,21 @@ class SystemDeps:
     db_path: str
     
     
-queryGenAgent = Agent(
+agent = Agent(
             model= GeminiModel(
                   model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
               ),
             system_prompt= """
-                  Generate SQL query for given question using <schema> </schema> and respond using template from <examples> </examples>
-                  <examples>
-                    <example>
-                      Q: what is id for pop genre?
-                      A: Select id from genre where name = 'Pop'
-                    </example>
-                    <example>
-                      Q: Album list for Pop genre?
-                      A: SELECT T1.Title FROM Album AS T1 INNER JOIN Track AS T2 ON T1.AlbumId = T2.AlbumId INNER JOIN Genre AS T3 ON T2.GenreId = T3.GenreId WHERE T3.Name = 'Pop'
-                      </example>
-                      <example>
-                      Q: Name IT staff
-                      A:
-                      </example>
-                    </examples>
-                """
-      )
-
-queryRunAgent = Agent(
-            model= GeminiModel(
-                  model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
-              ),
-            system_prompt= """
-                  Run the given query to generate response to the question
+                  Given the following question, follow these steps:
+                  1. Generate SQL Query: Using the provided <schema></schema> context, identify and create the appropriate SQL query that answers the question.
+                  2. Execute SQL Query: Run the generated SQL query using the tool to retrieve the results.
+                  3. Convert Results to Natural Language: Once you have the results from the query, convert the information into a brief, easy-to-understand response in natural language, summarizing the answer in a few words.
+                  Make sure the final output is a human-readable response based on the query execution, not just the SQL query.
                 """,
-          deps_type= SystemDeps
+              deps_type = SystemDeps
       )
 
-@queryRunAgent.tool
+@agent.tool
 def exec_query(ctx: RunContext[SystemDeps], query: str):
     """ Run query and generate the results"""
     with sqlite3.connect(ctx.deps.db_path) as conn:
@@ -94,14 +75,9 @@ def main():
         break
       #with logfire.span("Calling model") as span:
       prompt = f"<schema> {ss.retrieveContent(user_message)} </schema> question: {user_message}"
-      response = queryGenAgent.run_sync(user_prompt=prompt) #, message_history=messagesData.get_all())
+      response = agent.run_sync(user_prompt=prompt, deps=systemDeps) #, message_history=messagesData.get_all())
       console.print(response.data, style="cyan", end="\n\n")
       #messagesSql.add(response.all_messages())
-        
-      promptWIthQuery = f"query: {response.data} question: {user_message}"
-      response = queryRunAgent.run_sync(user_prompt=promptWIthQuery, deps=systemDeps) #, message_history=messagesData.get_all())
-      console.print(f"output: {response.data}", style="cyan", end="\n\n")
-      #messagesData.add(response.all_messages())
     
 if __name__ == '__main__':
   main()

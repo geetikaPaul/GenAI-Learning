@@ -24,7 +24,21 @@ queryGenAgent = Agent(
                   model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
               ),
             system_prompt= """
-                  Generate SQL query for given question using <schema> </schema>
+                  Generate SQL query for given question using <schema> </schema> and respond using template from <examples> </examples>
+                  <examples>
+                    <example>
+                      Q: what is id for pop genre?
+                      A: Select id from genre where name = 'Pop'
+                    </example>
+                    <example>
+                      Q: Album list for Pop genre?
+                      A: SELECT T1.Title FROM Album AS T1 INNER JOIN Track AS T2 ON T1.AlbumId = T2.AlbumId INNER JOIN Genre AS T3 ON T2.GenreId = T3.GenreId WHERE T3.Name = 'Pop'
+                      </example>
+                      <example>
+                      Q: Name IT staff
+                      A:
+                      </example>
+                    </examples>
                 """
       )
 
@@ -71,7 +85,7 @@ def main():
         end="\n\n",
     )
   
-  messagesSql = FixedSizeList(10)
+  messagesSql = FixedSizeList(10) #rag-semantic search-get relevant old msgs
   messagesData = FixedSizeList(10)
   
   while(True):

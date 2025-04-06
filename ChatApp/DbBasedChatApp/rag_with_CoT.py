@@ -10,6 +10,7 @@ import sqlite3
 from dataclasses import dataclass
 from semantic_search_with_rerank import SemanticSearch
 from Queue import FixedSizeList
+from pydantic_ai.providers.google_gla import GoogleGLAProvider
 
 load_dotenv(override=True)
 #logfire.configure(token=os.getenv("Logfire_Write_Token"))
@@ -21,7 +22,7 @@ class SystemDeps:
     
 agent = Agent(
             model= GeminiModel(
-                  model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
+                  model_name="gemini-2.0-flash-exp", provider=GoogleGLAProvider(api_key=os.getenv("Gemini_API_Key"))
               ),
             system_prompt= """
                   Given the following question, follow these steps:
@@ -42,7 +43,7 @@ def exec_query(ctx: RunContext[SystemDeps], query: str):
         rows = cursor.fetchall()
         return rows
 
-def main():
+def rag():
   systemDeps = SystemDeps(db_path=os.path.expanduser("~/genAI/Chatapp/DbBasedChatApp/data/Chinook_Sqlite.sqlite"))
   src_dir = os.path.expanduser("~/genAI/Chatapp/DbBasedChatApp/data")
   kb_dir = "metadata"
@@ -78,6 +79,25 @@ def main():
       response = agent.run_sync(user_prompt=prompt, deps=systemDeps) #, message_history=messagesData.get_all())
       console.print(response.data, style="cyan", end="\n\n")
       #messagesSql.add(response.all_messages())
+      
+
+def rag_get_response(user_message: str):
+  systemDeps = SystemDeps(db_path=os.path.expanduser("~/genAI/Chatapp/DbBasedChatApp/data/Chinook_Sqlite.sqlite"))
+  src_dir = os.path.expanduser("~/genAI/Chatapp/DbBasedChatApp/data")
+  kb_dir = "metadata"
+  vector_db_dir = "index"
+  ss = SemanticSearch(
+        src_dir,
+        kb_dir,
+        vector_db_dir,
+        os.getenv("HF_EMBEDDINGS_MODEL"),
+        os.getenv("HF_ReRanker_MODEL"),
+        20,
+        5,
+    )
+  prompt = f"<schema> {ss.retrieveContent(user_message)} </schema> question: {user_message}"
+  response = agent.run_sync(user_prompt=prompt, deps=systemDeps) #, message_history=messagesData.get_all())
+  return response.data
     
 if __name__ == '__main__':
-  main()
+  rag()

@@ -4,9 +4,106 @@ from dotenv import load_dotenv
 import pandas as pd
 from eval_utils import evaluate_retrieval_batch
 from semantic_search_with_rerank import SemanticSearch
+from ragas import SingleTurnSample, EvaluationDataset
+from ragas.metrics import Faithfulness, ResponseRelevancy
+from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
+from ragas import evaluate, RunConfig
+from langchain_groq import ChatGroq
+from rag_with_CoT import rag_get_response
+from tqdm import tqdm
+from langchain_huggingface import HuggingFaceEmbeddings
 
+load_dotenv(override=True)
 
-def evaluate(
+def generate_llm_responses(
+    src_dir: str,
+    eval_file: str,
+    ss: SemanticSearch):
+        print(">>> Begin: Generating responses for evaluation questions...")
+        with open(os.path.join(src_dir, eval_file), "r") as f:
+            eval_data = json.load(f)
+
+        results = []
+        for item in tqdm(eval_data, desc="Generating Answers Using RAG"):
+            response = rag_get_response(item["user_input"])
+            retrieved_contexts = ss.retrieveContent(item["user_input"])
+            tmp = {
+                "id": item["id"],
+                "user_input": item["user_input"],
+                "retrieved_contexts": retrieved_contexts,
+                "response": response,
+                "reference": item["reference"],
+            }
+            results.append(tmp)
+
+        with open(os.path.join(src_dir, eval_file), "w") as f:
+            json.dump(results, f, indent=2)
+        print(">>> End: Generating responses for evaluation questions...")
+
+def evaluate_generator(
+    src_dir: str,
+    eval_file: str):
+    # test_data = SingleTurnSample(
+    #     user_input="summarise given text\nThe company reported an 8% rise in Q3 2024, driven by strong performance in the Asian market. Sales in this region have significantly contributed to the overall growth. Analysts attribute this success to strategic marketing and product localization. The positive trend in the Asian market is expected to continue into the next quarter.",
+    #     response="The company experienced an 8% increase in Q3 2024, largely due to effective marketing strategies and product adaptation, with expectations of continued growth in the coming quarter.",
+    #     reference="The company reported an 8% growth in Q3 2024, primarily driven by strong sales in the Asian market, attributed to strategic marketing and localized products, with continued growth anticipated in the next quarter.",
+    #     retrieved_contexts = ["The company reported an 8% growth in Q3 2024, primarily driven by strong sales in the Asian market, attributed to strategic marketing and localized products, with continued growth anticipated in the next quarter."]
+    # )
+    # samples = []
+    # samples.append(test_data)
+    #evaluation_dataset = EvaluationDataset(samples=samples)
+    
+    with open(os.path.join(src_dir, eval_file), "r") as f:
+            eval_data = json.load(f)
+
+        # build evaluation dataset
+    samples = []
+    for item in eval_data:
+            sample = SingleTurnSample(
+                user_input=item["user_input"],
+                retrieved_contexts=item["retrieved_contexts"],
+                response=item["response"],
+                reference=item["reference"],
+            )
+            samples.append(sample)
+    evaluation_dataset = EvaluationDataset(samples=samples)
+
+    llm = ChatGroq(
+            model="gemma2-9b-it", api_key=os.getenv("GROQ_API_KEY")
+        )
+    evaluator_llm = LangchainLLMWrapper(llm)
+    embeddings_model = HuggingFaceEmbeddings(
+            model_name=os.getenv("HF_EMBEDDINGS_MODEL"),
+            encode_kwargs={"normalize_embeddings": True},
+            model_kwargs={"token": os.getenv("HuggingFace_AccessToken")},
+        )
+    evaluator_embeddings = LangchainEmbeddingsWrapper(embeddings_model)
+        
+    faithfulness_metric = Faithfulness(llm=evaluator_llm)
+    response_relevancy_metric = ResponseRelevancy(
+            llm=evaluator_llm, embeddings=evaluator_embeddings
+        )
+
+    # evaluate metrics
+    result = evaluate(
+            dataset=evaluation_dataset,
+            metrics=[
+                faithfulness_metric,
+                response_relevancy_metric
+            ],
+            run_config=RunConfig(max_workers=4, max_wait=60),
+            llm=evaluator_llm,
+            show_progress=True,
+        )
+    print(result)
+    df = result.to_pandas()
+    df.to_csv(
+            os.path.join(src_dir, "results/results_llm_metrics.csv"), index=False
+        )
+    print(">>> End: Evaluating LLM metrics...")
+    
+def evaluate_retriever(
     src_dir: str,
     eval_file: str,
     results_detailed_file: str,
@@ -37,7 +134,7 @@ def evaluate(
 
     df = pd.DataFrame(
         {
-            "question": [item["question"] for item in eval_data],
+            "question": [item["user_input"] for item in eval_data],
             "correct_links": all_correct_links,
             "retrieved_links": all_retrieved_links,
             "retrieval_precision": precisions,
@@ -83,10 +180,13 @@ ss = SemanticSearch(
         reranker_top_k
     )
 
-evaluate(
-    src_dir=src_dir,
-    eval_file="eval/chinook_eval.json",
-    results_detailed_file="results.csv",
-    results_summary_file="summary.json",
-    semantic_searcher=ss,
-)
+#generate_llm_responses(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json", ss=ss)
+evaluate_generator(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json")
+
+# evaluate_retriever(
+#     src_dir=src_dir,
+#     eval_file="eval/chinook_eval.json",
+#     results_detailed_file="results.csv",
+#     results_summary_file="summary.json",
+#     semantic_searcher=ss,
+# )

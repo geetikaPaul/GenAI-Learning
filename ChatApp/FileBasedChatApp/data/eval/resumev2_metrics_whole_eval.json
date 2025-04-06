@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "user_input": "contact details of John Doe",
+    "retrieved_contexts": [
+      "Software engineer obsessed with building exceptional products that people love hello@openresume.com 123-456-7890 NYC, NY linkedin.com/in/john-doe",
+      "Developer  PROFILE  CONTACT   Enthusiastic and creative graphic designer with a passion  for translating ideas into visually compelling designs. With  experience in both print and digital mediums, I thrive on  bringing concepts to life through innovative and impactful  designs.    816-555-0146    ian_hansson    hansson@example.com    www.example.com  EXPERIENCE  SKILLS"
+    ],
+    "response": "```text\nBased on the provided information:\n\nJohn Doe:\n*   Email: hello@openresume.com\n*   Phone: 123-456-7890\n*   Location: NYC, NY\n*   LinkedIn: linkedin.com/in/john-doe\n```",
+    "reference": "hello@openresume.com 123-456-7890 NYC, NY linkedin.com/in/john-doe"
+  },
+  {
+    "id": 2,
+    "user_input": "Is there any graphic designer?",
+    "retrieved_contexts": [
+      "Developer  PROFILE  CONTACT   Enthusiastic and creative graphic designer with a passion  for translating ideas into visually compelling designs. With  experience in both print and digital mediums, I thrive on  bringing concepts to life through innovative and impactful  designs.    816-555-0146    ian_hansson    hansson@example.com    www.example.com  EXPERIENCE  SKILLS",
+       "20XX-20XX  Bachelor of Arts, Graphic Design"
+    ],
+    "response": "Yes, Ian Hansson is a graphic designer.\n",
+    "reference": "yes, Ian Hannson"
+  }
+]

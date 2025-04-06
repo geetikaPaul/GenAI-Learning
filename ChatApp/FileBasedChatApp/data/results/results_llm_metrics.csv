@@ -1,0 +1,12 @@
+user_input,retrieved_contexts,response,reference,faithfulness,answer_relevancy
+contact details of John Doe,"['Software engineer obsessed with building exceptional products that people love hello@openresume.com 123-456-7890 NYC, NY linkedin.com/in/john-doe', 'Developer  PROFILE  CONTACT   Enthusiastic and creative graphic designer with a passion  for translating ideas into visually compelling designs. With  experience in both print and digital mediums, I thrive on  bringing concepts to life through innovative and impactful  designs.    816-555-0146    ian_hansson    hansson@example.com    www.example.com  EXPERIENCE  SKILLS']","```text
+Based on the provided information:
+
+John Doe:
+*   Email: hello@openresume.com
+*   Phone: 123-456-7890
+*   Location: NYC, NY
+*   LinkedIn: linkedin.com/in/john-doe
+```","hello@openresume.com 123-456-7890 NYC, NY linkedin.com/in/john-doe",0.8,0.8139156359972445
+Is there any graphic designer?,"['Developer  PROFILE  CONTACT   Enthusiastic and creative graphic designer with a passion  for translating ideas into visually compelling designs. With  experience in both print and digital mediums, I thrive on  bringing concepts to life through innovative and impactful  designs.    816-555-0146    ian_hansson    hansson@example.com    www.example.com  EXPERIENCE  SKILLS', '20XX-20XX  Bachelor of Arts, Graphic Design']","Yes, Ian Hansson is a graphic designer.
+","yes, Ian Hannson",1.0,0.5587076043548364

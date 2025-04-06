@@ -10,7 +10,7 @@ from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas import evaluate, RunConfig
 from langchain_groq import ChatGroq
-from rag_with_CoT import rag_get_response
+from rag import rag_get_response
 from tqdm import tqdm
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -104,7 +104,7 @@ def evaluate_generator(
     print(">>> End: Evaluating LLM metrics...")
 
 
-def evaluate(
+def evaluate_retriever(
     src_dir: str,
     eval_file: str,
     results_detailed_file: str,
@@ -183,10 +183,14 @@ ss = SemanticSearcherWithRerank(
         reranker_top_k
     )
 
-evaluate(
-    src_dir=src_dir,
-    eval_file="eval/resumev2_eval_data_metadata.json",
-    results_detailed_file="results.csv",
-    results_summary_file="summary.json",
-    semantic_searcher=ss,
-)
+
+#generate_llm_responses(src_dir=src_dir, eval_file="eval/resumev2_metrics_whole_eval.json", ss=ss)
+evaluate_generator(src_dir=src_dir, eval_file="eval/resumev2_metrics_whole_eval.json")
+
+# evaluate_retriever(
+#     src_dir=src_dir,
+#     eval_file="eval/resumev2_eval_data_metadata.json",
+#     results_detailed_file="results.csv",
+#     results_summary_file="summary.json",
+#     semantic_searcher=ss,
+# )

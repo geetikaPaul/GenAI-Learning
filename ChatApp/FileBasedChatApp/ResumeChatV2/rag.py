@@ -6,6 +6,7 @@ import logfire
 from google import genai
 from pydantic_ai import Agent
 from pydantic_ai.models.gemini import GeminiModel
+from pydantic_ai.providers.google_gla import GoogleGLAProvider
 
 load_dotenv(override=True)
 logfire.configure(token=os.getenv("Logfire_Write_Token"))
@@ -13,8 +14,8 @@ logfire.configure(token=os.getenv("Logfire_Write_Token"))
 client = genai.Client(api_key=os.getenv("Gemini_API_Key"))
 agent = Agent(
     model=GeminiModel(
-        model_name="gemini-2.0-flash-exp", api_key=os.getenv("Gemini_API_Key")
-    ),
+                  model_name="gemini-2.0-flash-exp", provider=GoogleGLAProvider(api_key=os.getenv("Gemini_API_Key"))
+              ),
     system_prompt="""
       You are a resume details fetcher chatbot.
       Follow these guidelines:
@@ -66,6 +67,31 @@ def main():
           response = agent.run_sync(prompt)
         console.print(response.data, style="cyan", end="\n\n")
 
+
+def rag_get_response(user_question: str):
+    load_dotenv(override=True)
+    src_dir = os.path.expanduser(
+        "~/genAI/ChatApp/FileBasedChatApp/data"
+    )
+    vector_db_dir = "faissResumeV2"
+    kb_dir = "resume"
+    embedding_model_name = os.getenv("HF_EMBEDDINGS_MODEL")
+    reranking_model_name = os.getenv("HF_ReRanker_MODEL")
+    retriever_top_k = 5
+    reranker_top_k = 2
+    ss = SemanticSearcherWithRerank(
+        src_dir,
+        kb_dir,
+        vector_db_dir,
+        embedding_model_name,
+        reranking_model_name,
+        retriever_top_k,
+        reranker_top_k,
+    )
+    result = ss.retrieveContent(user_question)
+    prompt = get_rag_context(context= result) + "\n\n query :" + user_question
+    response = agent.run_sync(prompt)
+    return response.data
 
 if __name__ == "__main__":
     main()

@@ -119,3 +119,21 @@ class SemanticSearcherWithRerank:
             
             outputs.append(output_data)
         return outputs
+    
+    def retrieveContentOnly(self, query: str):
+        base_retriever = self.vector_db.as_retriever(
+            search_kwargs={"k": self.retriever_top_k}
+        )
+        compressor = CrossEncoderReranker(
+            model=self.rerank_model, top_n=self.reranker_top_k
+        )
+        compression_retriever = ContextualCompressionRetriever(
+            base_compressor=compressor, base_retriever=base_retriever
+        )
+        results = compression_retriever.invoke(query)
+        outputs = []
+        for result in results:
+            output_data = result.page_content
+            
+            outputs.append(output_data)
+        return outputs

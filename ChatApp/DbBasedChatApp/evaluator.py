@@ -7,10 +7,12 @@ from semantic_search_with_rerank import SemanticSearch
 from ragas import SingleTurnSample, EvaluationDataset
 from ragas.metrics import Faithfulness, ResponseRelevancy
 from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas import evaluate, RunConfig
 from langchain_groq import ChatGroq
 from rag_with_CoT import rag_get_response
 from tqdm import tqdm
+from langchain_huggingface import HuggingFaceEmbeddings
 
 load_dotenv(override=True)
 
@@ -60,7 +62,7 @@ def evaluate_generator(
     for item in eval_data:
             sample = SingleTurnSample(
                 user_input=item["user_input"],
-                reference_contexts=item["retrieved_contexts"],
+                retrieved_contexts=item["retrieved_contexts"],
                 response=item["response"],
                 reference=item["reference"],
             )
@@ -71,22 +73,35 @@ def evaluate_generator(
             model="gemma2-9b-it", api_key=os.getenv("GROQ_API_KEY")
         )
     evaluator_llm = LangchainLLMWrapper(llm)
+    embeddings_model = HuggingFaceEmbeddings(
+            model_name=os.getenv("HF_EMBEDDINGS_MODEL"),
+            encode_kwargs={"normalize_embeddings": True},
+            model_kwargs={"token": os.getenv("HuggingFace_AccessToken")},
+        )
+    evaluator_embeddings = LangchainEmbeddingsWrapper(embeddings_model)
+        
     faithfulness_metric = Faithfulness(llm=evaluator_llm)
-    # response_relevancy_metric = ResponseRelevancy(
-    #         llm=evaluator_llm, embeddings=evaluator_embeddings
-    #     )
+    response_relevancy_metric = ResponseRelevancy(
+            llm=evaluator_llm, embeddings=evaluator_embeddings
+        )
 
     # evaluate metrics
     result = evaluate(
             dataset=evaluation_dataset,
             metrics=[
-                faithfulness_metric
+                faithfulness_metric,
+                response_relevancy_metric
             ],
             run_config=RunConfig(max_workers=4, max_wait=60),
             llm=evaluator_llm,
             show_progress=True,
         )
     print(result)
+    df = result.to_pandas()
+    df.to_csv(
+            os.path.join(src_dir, "results/results_llm_metrics.csv"), index=False
+        )
+    print(">>> End: Evaluating LLM metrics...")
     
 def evaluate_retriever(
     src_dir: str,
@@ -165,8 +180,9 @@ ss = SemanticSearch(
         reranker_top_k
     )
 
-generate_llm_responses(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json", ss=ss)
-#evaluate_generator(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json")
+#generate_llm_responses(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json", ss=ss)
+evaluate_generator(src_dir=src_dir, eval_file="eval/chinook_metrics_whole_eval.json")
+
 # evaluate_retriever(
 #     src_dir=src_dir,
 #     eval_file="eval/chinook_eval.json",

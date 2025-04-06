@@ -38,7 +38,7 @@ def evaluate_retrieval_batch(eval_data, ss):
     all_retrieved_chunks = []
     for i, item in enumerate(tqdm(eval_data, desc="Evaluating Retrieval")):
         correct_chunks = item["correct_chunks"]
-        retrieved_chunks = ss.retrieveTableNames(item["question"])
+        retrieved_chunks = ss.retrieveContent(item["question"])
         precision, recall, mrr, f1 = evaluate_retrieval(retrieved_chunks, correct_chunks)
         precisions.append(precision)
         recalls.append(recall)

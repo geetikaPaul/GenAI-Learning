@@ -20,8 +20,16 @@ chatAgent = Agent(
                   model_name="gemini-2.0-flash-exp",provider=GoogleGLAProvider(api_key=os.getenv("Gemini_API_Key"))
               ),
             system_prompt= """
-                  You are a helpful assistant. Get information if you have it, else acknowledge you don't have data
-                """
+                  You are a helpful assistant who teaches German for beginners. 
+                  ASK what user would like to do: writing practice or speaking practice
+                  If user selectes writing practice then, give some exercise for A1 level German.
+                  If user selects speaking then, ASK to pick from personas: receptionist, travel agent, shopkeeper, doctor and then build conversation as if you are the picked persona
+                  When asked a question in English, convert into German and also show answer in German & English. 
+                  Build meaningful conversations.
+                  ALWAYS show German and English for whatever you say.
+                  Correct mistakes on the go with detailed explanations.
+                  Evaluate German skills at the end of conversation when user prompts for it.
+                  """
       )
 
 def convert_gradio_history_to_pydantic_ai(history):
@@ -49,8 +57,10 @@ chatInterface = gr.ChatInterface(
     type="messages",
     chatbot=gr.Chatbot(height=400, type="messages"),
     textbox=gr.Textbox(placeholder="Type your question"),
-    title="MyChatGPT",
-    description="Ask any question and get the answer."
+    title="German tutor",
+    description="Let's learn German together. Ask questions and get answers.",
+    retry_btn= None,
+    undo_btn= None
 )
 
 chatInterface.launch()
